@@ -26,7 +26,7 @@ const ProductListScreen: FC = () => {
     const inCart = cart?.some(p => p.id === item.id);
 
     return (
-      <View style={styles.card}>
+      <View style={styles.productCard}>
         <Image
           source={{ uri: item?.thumbnail }}
           style={styles.thumbnail}
@@ -44,7 +44,7 @@ const ProductListScreen: FC = () => {
           numberOfLines={1}
           allowFontScaling={false}
         >
-          {item?.brand ?? 'Myntra'}
+          (Brand - {item?.brand ?? 'Myntra'})
         </Text>
         <Text
           style={styles.priceStyle}
@@ -97,15 +97,15 @@ const ProductListScreen: FC = () => {
             <Text
               numberOfLines={1}
               allowFontScaling={false}
-              style={styles.cartText}
+              style={styles.cartButtonText}
             >
-              Cart ({cart?.length})
+              Cart({cart?.length})
             </Text>
           </TouchableOpacity>
         </View>
 
         {/* Product list */}
-        <View style={styles.listContainer}>
+        <View style={styles.productListContainer}>
           {loading ? (
             <View style={styles.loaderView}>
               <ActivityIndicator size={'large'} color={colors.black} />
@@ -116,9 +116,9 @@ const ProductListScreen: FC = () => {
               keyExtractor={item => item?.id?.toString()}
               renderItem={renderItem}
               showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.productsContentContainerStyle}
               numColumns={2}
-              columnWrapperStyle={styles.columnWrapperStyle}
-              contentContainerStyle={styles.contentContainerStyle}
+              columnWrapperStyle={styles.productColumnWrapperStyle}
             />
           )}
         </View>

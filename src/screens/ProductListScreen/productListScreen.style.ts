@@ -13,81 +13,87 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   header: {
-    paddingHorizontal: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+    borderBottomWidth: 0.2,
   },
   headingText: {
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: 22,
+    fontWeight: '800',
     color: colors.black,
   },
-  cartText: {
+  cartButtonText: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '700',
     color: colors.pink,
   },
-  listContainer: {
+  productListContainer: {
     flex: 1,
-    paddingHorizontal: 15,
-    paddingVertical: 20,
-  },
-  columnWrapperStyle: {
-    justifyContent: 'space-between',
   },
   loaderView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  contentContainerStyle: {
+  productsContentContainerStyle: {
     flex: 1,
     rowGap: 10,
+    padding: 15,
   },
-  card: {
+  productColumnWrapperStyle: {
+    justifyContent: 'space-between',
+  },
+
+  productCard: {
     borderWidth: 0.2,
-    padding: 10,
+    padding: 12,
     width: width / 2 - 20,
     borderRadius: 10,
   },
   thumbnail: {
-    height: 150,
+    height: 160,
     width: 150,
   },
   titleStyle: {
-    fontSize: 14,
+    fontSize: 16,
+    color: colors.black,
+  },
+  brandStyle: {
+    marginTop: 1,
+    fontSize: 12,
     color: colors.black,
   },
   priceStyle: {
     marginTop: 6,
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '700',
     color: colors.green,
   },
-  brandStyle: {
-    marginTop: 3,
-    fontSize: 15,
-    color: colors.black,
-  },
-  addToCartButton: {
-    height: 30,
-    backgroundColor: colors.pink,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
-    borderRadius: 6,
-  },
+
   removeToCartButton: {
-    height: 30,
+    height: 35,
     backgroundColor: colors.red,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 10,
     borderRadius: 6,
   },
+
+  addToCartButton: {
+    height: 35,
+    backgroundColor: colors.pink,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    borderRadius: 6,
+  },
+
   addToCartText: {
-    fontSize: 15,
+    fontSize: 14,
     color: colors.white,
-    fontWeight: '600',
+    fontWeight: '500',
   },
 });
