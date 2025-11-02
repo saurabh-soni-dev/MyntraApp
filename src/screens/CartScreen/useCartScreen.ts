@@ -17,6 +17,10 @@ const useCartScreen = () => {
     navigation.navigate('ProductListScreen');
   };
 
+  const backToProductScreen = () => {
+    navigation.goBack();
+  };
+
   return {
     cart,
     total,
@@ -25,6 +29,7 @@ const useCartScreen = () => {
     decreaseQty,
     onCheckout,
     navigateToProductScreen,
+    backToProductScreen,
   };
 };
 

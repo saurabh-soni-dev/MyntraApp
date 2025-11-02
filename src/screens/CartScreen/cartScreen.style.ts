@@ -18,45 +18,47 @@ export const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   headingText: {
-    fontSize: 20,
-    fontWeight: '700',
+    flex: 1,
+    fontSize: 22,
+    fontWeight: '800',
     color: colors.black,
+    textAlign: 'center',
   },
-  listContainer: {
+  cartListContainer: {
     flex: 1,
     paddingHorizontal: 15,
     paddingVertical: 20,
   },
-  loaderView: {
+  emptyView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  contentContainerStyle: {
-    flex: 1,
-    rowGap: 10,
+  emptyText: {
+    fontSize: 16,
+    color: colors.black,
+    marginBottom: 10,
   },
   continueShoppingButton: {
     backgroundColor: colors.pink,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 5,
-    padding: 10,
+    borderRadius: 10,
+    padding: 12,
   },
-  msgText: {
-    fontSize: 14,
-    color: colors.black,
-    fontWeight: '500',
-    marginBottom: 5,
-  },
-  buttonText: {
-    fontSize: 14,
+  continueShoppingButtonText: {
+    fontSize: 16,
     color: colors.white,
     fontWeight: '600',
   },
+  cartContentContainerStyle: {
+    flex: 1,
+    rowGap: 10,
+  },
+
   totalView: {
     padding: 30,
-    paddingBottom: 50,
+    paddingBottom: 40,
     backgroundColor: 'lightgray',
     flexDirection: 'row',
     alignItems: 'center',
@@ -64,7 +66,7 @@ export const styles = StyleSheet.create({
   },
   totalText: {
     fontSize: 18,
-    fontWeight: '500',
+    fontWeight: '600',
     color: colors.black,
   },
   totalAmountText: {
@@ -72,54 +74,75 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     color: colors.black,
   },
-  card: {
-    padding: 10,
-    borderWidth: 0.2,
+  checkoutButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    backgroundColor: colors.pink,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+  },
+
+  cartCard: {
+    padding: 12,
+    borderWidth: 0.1,
     borderBottomWidth: 0.6,
     flexDirection: 'row',
-    // alignItems: 'center',
+    borderRadius: 5,
   },
   imageView: {
-    height: 60,
-    width: 60,
+    height: 75,
+    width: 75,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: 'lightgray',
-    borderRadius: 6,
-    marginRight: 10,
+    borderRadius: 8,
+    marginRight: 15,
   },
   image: {
-    height: 60,
-    width: 60,
+    height: 65,
+    width: 65,
   },
-  titleStyle: {
-    fontSize: 14,
-    color: colors.black,
-  },
+
   detailsView: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 6,
   },
+
+  titleStyle: {
+    fontSize: 16,
+    color: colors.black,
+  },
+
+  qtyButtonStyle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: colors.white,
+  },
+
+  qtyTextStyle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: colors.black,
+  },
+
   qtyButton: {
-    height: 35,
-    width: 35,
+    height: 32,
+    width: 32,
     backgroundColor: colors.pink,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
   },
+
   removeButton: {
-    marginTop: 10,
+    paddingVertical: 10,
   },
+
   removeButtonText: {
     fontSize: 16,
     color: colors.red,
     fontWeight: '500',
-  },
-  checkoutButton: {
-    padding: 10,
-    backgroundColor: colors.pink,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
   },
 });
