@@ -23,10 +23,10 @@ const ProductListScreen: FC = () => {
   } = useProductListScreen();
 
   const renderItem = ({ item }: { item: Product }) => {
-    const inCart = cart?.some(p => p.id === item.id);
+    const inCart = cart?.some(p => p?.id === item?.id);
 
     return (
-      <View style={styles.productCard}>
+      <View style={styles.productCard} key={item?.id}>
         <Image
           source={{ uri: item?.thumbnail }}
           style={styles.thumbnail}
@@ -56,7 +56,7 @@ const ProductListScreen: FC = () => {
         {inCart ? (
           <TouchableOpacity
             style={styles.removeToCartButton}
-            onPress={() => removeToCart(item.id)}
+            onPress={() => removeToCart(item?.id)}
             activeOpacity={0.6}
           >
             <Text
@@ -99,7 +99,7 @@ const ProductListScreen: FC = () => {
               allowFontScaling={false}
               style={styles.cartButtonText}
             >
-              Cart({cart?.length})
+              Cart({cart?.length ?? 0})
             </Text>
           </TouchableOpacity>
         </View>

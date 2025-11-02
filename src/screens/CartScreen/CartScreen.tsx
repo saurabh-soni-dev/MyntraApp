@@ -19,7 +19,7 @@ const CartScreen: FC = () => {
 
   const renderItem = ({ item }: { item: Product }) => {
     return (
-      <View style={styles.cartCard}>
+      <View style={styles.cartCard} key={item.id}>
         <View style={styles.imageView}>
           <Image
             source={{ uri: item?.thumbnail }}
