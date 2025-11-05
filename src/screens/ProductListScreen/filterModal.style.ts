@@ -1,14 +1,15 @@
 import { StyleSheet } from 'react-native';
 import { moderateScale, scale, verticalScale } from '../../utils/responsive';
+import { colors } from '../../theme/colors';
 
 export const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: colors.action.disabled + 'CC', // 80% opacity
   },
   sheet: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.background.primary,
     borderTopLeftRadius: moderateScale(12),
     borderTopRightRadius: moderateScale(12),
     maxHeight: '70%',
@@ -17,6 +18,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: moderateScale(16),
     fontWeight: '700',
+    color: colors.text.primary,
   },
   scroll: {
     marginTop: verticalScale(12),
@@ -24,6 +26,7 @@ export const styles = StyleSheet.create({
   sectionLabel: {
     fontWeight: '600',
     marginBottom: verticalScale(8),
+    color: colors.text.secondary,
   },
   categoryRow: {
     paddingVertical: verticalScale(8),
@@ -38,12 +41,15 @@ export const styles = StyleSheet.create({
   priceInput: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: colors.border,
     padding: scale(8),
     borderRadius: moderateScale(6),
+    backgroundColor: colors.background.secondary,
+    color: colors.text.primary,
   },
   sortOption: {
     paddingVertical: verticalScale(8),
+    color: colors.text.secondary,
   },
   footerRow: {
     flexDirection: 'row',

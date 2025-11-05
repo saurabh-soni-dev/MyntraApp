@@ -19,6 +19,9 @@ type Filters = {
 export const useProductListScreen = () => {
   const [products, setProducts] = useState<RawProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState<Filters>({
     category: null,
@@ -27,25 +30,55 @@ export const useProductListScreen = () => {
     sortBy: null,
   });
 
+  const fetchProducts = async (pageNumber: number, isRefreshing = false) => {
+    const limit = 20;
+    const skip = pageNumber * limit;
+
+    try {
+      const response = await fetch(
+        `https://dummyjson.com/products?limit=${limit}&skip=${skip}`,
+      );
+      const data = await response.json();
+
+      const mapped: RawProduct[] = (data.products || []).map((p: any) => ({
+        id: p.id,
+        title: p.title,
+        thumbnail: p.thumbnail,
+        price: Number(p.price),
+        category: p.category,
+        brand: p.brand,
+      }));
+
+      setProducts(prev => (isRefreshing ? mapped : [...prev, ...mapped]));
+      setHasMore(mapped.length === limit);
+      return true;
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      return false;
+    }
+  };
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    setPage(0);
+    await fetchProducts(0, true);
+    setRefreshing(false);
+  };
+
+  const handleLoadMore = async () => {
+    if (loading || !hasMore) return;
+    setLoading(true);
+    await fetchProducts(page + 1);
+    setPage(prev => prev + 1);
+    setLoading(false);
+  };
+
   useEffect(() => {
     let mounted = true;
     setLoading(true);
-    fetch('https://dummyjson.com/products?limit=100')
-      .then(res => res.json())
-      .then(data => {
-        if (!mounted) return;
-        const mapped: RawProduct[] = (data.products || []).map((p: any) => ({
-          id: p.id,
-          title: p.title,
-          thumbnail: p.thumbnail,
-          price: Number(p.price),
-          category: p.category,
-          brand: p.brand,
-        }));
-        setProducts(mapped);
-      })
-      .catch(() => {})
-      .finally(() => mounted && setLoading(false));
+    fetchProducts(0).finally(() => {
+      if (mounted) setLoading(false);
+    });
 
     return () => {
       mounted = false;
@@ -101,12 +134,16 @@ export const useProductListScreen = () => {
     products,
     filteredProducts: filtered,
     loading,
+    refreshing,
     searchTerm,
     setSearchTerm,
     filters,
     setFilters,
     clearFilters,
     categories,
+    handleRefresh,
+    handleLoadMore,
+    hasMore,
   } as const;
 };
 

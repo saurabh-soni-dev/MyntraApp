@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   View,
   Text,
   FlatList,
-  Image,
   TouchableOpacity,
   StyleSheet,
   Alert,
 } from 'react-native';
 import { moderateScale, verticalScale, scale } from '../../utils/responsive';
+import { colors } from '../../theme/colors';
 import { useCart } from '../../context/CartContext';
 import CustomStatusBar from '../../components/CustomStatusBar';
 import { useNavigation } from '@react-navigation/native';
+import { CartItem } from '../../components/CartItem/CartItem';
 
 const CartScreen = () => {
   const {
@@ -26,49 +27,44 @@ const CartScreen = () => {
   } = useCart();
   const navigation = useNavigation<any>();
 
-  const handleCheckout = () => {
+  const handleCheckout = useCallback(() => {
     Alert.alert(
       'Order Placed',
       `Your total is ₹${total}. Thank you for shopping 🛍️`,
       [{ text: 'OK', onPress: clearCart }],
     );
-  };
+  }, [total, clearCart]);
 
-  const renderItem = ({ item }: any) => (
-    <View style={styles.card}>
-      <Image source={{ uri: item.thumbnail }} style={styles.image} />
-      <View style={styles.details}>
-        <Text style={styles.title} numberOfLines={1}>
-          {item.title}
-        </Text>
-        <Text style={styles.brand}>{item.brand || 'Myntra Brand'}</Text>
-        <Text style={styles.price}>₹ {item.price}</Text>
+  const renderItem = useCallback(
+    ({ item }: any) => (
+      <CartItem
+        item={item}
+        quantity={getItemQuantity(item.id)}
+        canDecrease={canDecreaseQty(item.id)}
+        onIncrement={() => incrementQty(item.id)}
+        onDecrement={() => decrementQty(item.id)}
+        onRemove={() => removeToCart(item.id)}
+      />
+    ),
+    [getItemQuantity, canDecreaseQty, incrementQty, decrementQty, removeToCart],
+  );
 
-        <View style={styles.qtyContainer}>
-          <TouchableOpacity
-            style={[
-              styles.qtyBtn,
-              !canDecreaseQty(item.id) && styles.qtyBtnDisabled,
-            ]}
-            onPress={() => decrementQty(item.id)}
-            disabled={!canDecreaseQty(item.id)}
-          >
-            <Text style={styles.qtyText}>-</Text>
-          </TouchableOpacity>
-          <Text style={styles.qtyCount}>{getItemQuantity(item.id)}</Text>
-          <TouchableOpacity
-            style={styles.qtyBtn}
-            onPress={() => incrementQty(item.id)}
-          >
-            <Text style={styles.qtyText}>+</Text>
-          </TouchableOpacity>
-        </View>
+  const keyExtractor = useCallback((item: any) => item.id.toString(), []);
 
-        <TouchableOpacity onPress={() => removeToCart(item.id)}>
-          <Text style={styles.removeText}>Remove</Text>
+  const EmptyComponent = useCallback(
+    () => (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>🛍️ Your cart is empty</Text>
+        <TouchableOpacity
+          style={styles.shopBtn}
+          onPress={() => navigation.navigate('ProductListScreen')}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.shopText}>Continue Shopping</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    ),
+    [navigation],
   );
 
   return (
@@ -83,22 +79,20 @@ const CartScreen = () => {
       </View>
 
       {cart.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>🛍️ Your cart is empty</Text>
-          <TouchableOpacity
-            style={styles.shopBtn}
-            onPress={() => navigation.navigate('ProductListScreen')}
-          >
-            <Text style={styles.shopText}>Continue Shopping</Text>
-          </TouchableOpacity>
-        </View>
+        <EmptyComponent />
       ) : (
         <>
           <FlatList
             data={cart}
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={keyExtractor}
             renderItem={renderItem}
             contentContainerStyle={styles.listContent}
+            removeClippedSubviews={true}
+            maxToRenderPerBatch={6}
+            initialNumToRender={4}
+            windowSize={5}
+            updateCellsBatchingPeriod={50}
+            showsVerticalScrollIndicator={false}
           />
 
           {/* Checkout Footer */}
@@ -110,6 +104,7 @@ const CartScreen = () => {
             <TouchableOpacity
               style={styles.checkoutBtn}
               onPress={handleCheckout}
+              activeOpacity={0.7}
             >
               <Text style={styles.checkoutText}>CHECKOUT</Text>
             </TouchableOpacity>
@@ -125,12 +120,12 @@ export default CartScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background.primary,
   },
   header: {
     padding: verticalScale(14),
     borderBottomWidth: 0.3,
-    borderColor: '#ddd',
+    borderColor: colors.border,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -140,23 +135,29 @@ const styles = StyleSheet.create({
   },
   backArrow: {
     fontSize: moderateScale(22),
-    color: '#333',
+    color: colors.text.primary,
   },
   headerText: {
     fontSize: moderateScale(18),
     fontWeight: '700',
-    color: '#333',
+    color: colors.text.primary,
   },
   card: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: colors.background.primary,
     marginHorizontal: scale(12),
     marginVertical: verticalScale(6),
     borderRadius: moderateScale(10),
-    elevation: 3,
-    shadowColor: '#000',
+    // Android shadow
+    elevation: 4,
+    // iOS shadow
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
     shadowOpacity: 0.1,
-    shadowRadius: 5,
+    shadowRadius: 4,
     padding: scale(10),
   },
   image: {
@@ -172,16 +173,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: moderateScale(14),
     fontWeight: '600',
-    color: '#333',
+    color: colors.text.primary,
   },
   brand: {
     fontSize: moderateScale(12),
-    color: '#777',
+    color: colors.text.muted,
   },
   price: {
     fontSize: moderateScale(14),
     fontWeight: '700',
-    color: '#222',
+    color: colors.text.primary,
     marginTop: verticalScale(4),
   },
   qtyContainer: {
@@ -193,15 +194,15 @@ const styles = StyleSheet.create({
     width: moderateScale(28),
     height: moderateScale(28),
     borderRadius: moderateScale(6),
-    backgroundColor: '#ff4081',
+    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
   qtyBtnDisabled: {
-    backgroundColor: '#f8bbd0',
+    backgroundColor: colors.primaryLight,
   },
   qtyText: {
-    color: '#fff',
+    color: colors.background.primary,
     fontSize: moderateScale(18),
     fontWeight: '600',
   },
@@ -209,10 +210,10 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(16),
     fontWeight: '600',
     marginHorizontal: scale(10),
-    color: '#333',
+    color: colors.text.primary,
   },
   removeText: {
-    color: '#ff3b30',
+    color: colors.error.main,
     fontSize: moderateScale(12),
     fontWeight: '500',
     marginTop: verticalScale(8),
@@ -222,8 +223,8 @@ const styles = StyleSheet.create({
     bottom: verticalScale(25),
     width: '100%',
     borderTopWidth: 0.3,
-    borderColor: '#ddd',
-    backgroundColor: '#fff',
+    borderColor: colors.border,
+    backgroundColor: colors.background.primary,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -235,21 +236,21 @@ const styles = StyleSheet.create({
   },
   totalLabel: {
     fontSize: moderateScale(13),
-    color: '#777',
+    color: colors.text.muted,
   },
   totalValue: {
     fontSize: moderateScale(18),
     fontWeight: '700',
-    color: '#222',
+    color: colors.text.primary,
   },
   checkoutBtn: {
-    backgroundColor: '#ff4081',
+    backgroundColor: colors.primary,
     paddingVertical: verticalScale(10),
     paddingHorizontal: scale(24),
     borderRadius: moderateScale(8),
   },
   checkoutText: {
-    color: '#fff',
+    color: colors.background.primary,
     fontWeight: '700',
     fontSize: moderateScale(14),
   },
@@ -260,17 +261,17 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: moderateScale(18),
-    color: '#555',
+    color: colors.text.muted,
     marginBottom: 20,
   },
   shopBtn: {
-    backgroundColor: '#ff4081',
+    backgroundColor: colors.primary,
     paddingVertical: verticalScale(10),
     paddingHorizontal: scale(20),
     borderRadius: moderateScale(8),
   },
   shopText: {
-    color: '#fff',
+    color: colors.background.primary,
     fontWeight: '600',
   },
   listContent: {

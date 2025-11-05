@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { moderateScale, verticalScale, scale } from '../../utils/responsive';
+import { colors } from '../../theme/colors';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background.primary,
   },
   header: {
     flexDirection: 'row',
@@ -13,12 +14,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: scale(15),
     paddingVertical: verticalScale(12),
     borderBottomWidth: 1,
-    borderColor: '#eee',
+    borderColor: colors.border,
   },
   title: {
     fontSize: moderateScale(20),
     fontWeight: '600',
-    color: '#111',
+    color: colors.text.primary,
   },
   cartButton: {
     padding: scale(8),
@@ -29,11 +30,11 @@ export const styles = StyleSheet.create({
   },
   cartText: {
     fontSize: moderateScale(16),
-    color: '#e91e63',
+    color: colors.primary,
     fontWeight: '600',
   },
   cartTextDisabled: {
-    color: '#999',
+    color: colors.text.light,
   },
   listContainer: {
     paddingHorizontal: scale(10),
@@ -43,12 +44,20 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.background.primary,
     borderRadius: moderateScale(10),
     marginVertical: verticalScale(8),
-    elevation: 3,
     padding: scale(10),
-    borderWidth: 0.2,
+    // Android shadow
+    elevation: 4,
+    // iOS shadow
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   image: {
     width: '100%',
@@ -59,34 +68,34 @@ export const styles = StyleSheet.create({
   name: {
     fontSize: moderateScale(14),
     fontWeight: '600',
-    color: '#333',
+    color: colors.text.secondary,
     marginBottom: verticalScale(4),
   },
   price: {
     fontSize: moderateScale(14),
-    color: 'green',
+    color: colors.success.main,
     fontWeight: '600',
     marginBottom: verticalScale(8),
   },
   addButton: {
-    backgroundColor: '#e91e63',
+    backgroundColor: colors.primary,
     paddingVertical: verticalScale(8),
     borderRadius: moderateScale(6),
     alignItems: 'center',
   },
   addButtonDisabled: {
-    backgroundColor: '#f8bbd0',
+    backgroundColor: colors.primaryLight,
   },
   goToCartButton: {
-    backgroundColor: '#2196f3', // A nice blue color to differentiate from Add to Cart
+    backgroundColor: colors.secondary,
   },
   addText: {
-    color: '#fff',
+    color: colors.background.primary,
     fontWeight: '600',
     fontSize: moderateScale(14),
   },
   bottomButton: {
-    backgroundColor: '#000',
+    backgroundColor: colors.text.primary,
     paddingVertical: verticalScale(14),
     marginHorizontal: scale(15),
     marginBottom: verticalScale(15),
@@ -98,7 +107,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   bottomText: {
-    color: '#fff',
+    color: colors.background.primary,
     fontWeight: '700',
     fontSize: moderateScale(16),
   },
@@ -117,23 +126,39 @@ export const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: colors.border,
     paddingVertical: verticalScale(8),
     paddingHorizontal: scale(12),
     borderRadius: moderateScale(8),
-    backgroundColor: '#fafafa',
+    backgroundColor: colors.background.secondary,
   },
   filterButton: {
     marginLeft: scale(8),
     paddingVertical: verticalScale(8),
     paddingHorizontal: scale(12),
     borderRadius: moderateScale(8),
-    backgroundColor: '#fff',
+    backgroundColor: colors.background.primary,
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: colors.border,
   },
   filterText: {
-    color: '#333',
+    color: colors.text.muted,
+    fontSize: moderateScale(14),
     fontWeight: '600',
+  },
+  footerLoader: {
+    paddingVertical: verticalScale(20),
+    alignItems: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: verticalScale(50),
+  },
+  emptyText: {
+    fontSize: moderateScale(16),
+    color: colors.text.muted,
+    textAlign: 'center',
   },
 });
