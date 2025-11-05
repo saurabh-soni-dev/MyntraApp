@@ -12,10 +12,10 @@ import { Header } from '../../components/Header/Header';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import FilterModal from './FilterModal';
-import { styles } from './ProductListScreen.style';
 import { colors } from '../../theme/colors';
 import { RawProduct, useProductListScreen } from './useProductListScreen';
 import CustomStatusBar from '../../components/CustomStatusBar/CustomStatusBar';
+import { styles } from './productListScreen.style';
 
 const ProductListScreen: FC = () => {
   const {
