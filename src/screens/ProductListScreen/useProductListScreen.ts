@@ -195,6 +195,7 @@ export const useProductListScreen = () => {
     searchTerm,
     filters,
     filterVisible,
+    setFilterVisible,
 
     // Filter Actions
     handleFilterOpen,

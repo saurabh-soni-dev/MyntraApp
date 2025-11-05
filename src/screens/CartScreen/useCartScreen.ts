@@ -27,20 +27,9 @@ const useCartScreen = () => {
   const navigation = useNavigation<any>();
 
   const handleCheckout = useCallback(() => {
-    Alert.alert(
-      'Order Placed',
-      `Your total is ₹${total}. Thank you for shopping 🛍️`,
-      [
-        {
-          text: 'OK',
-          onPress: () => {
-            navigation.navigate('ProductListScreen');
-            clearCart();
-          },
-        },
-      ],
-    );
-  }, [total, clearCart, navigation]);
+    navigation.navigate('ProductListScreen');
+    clearCart();
+  }, [navigation, clearCart]);
 
   const getCartItemProps = useCallback(
     (item: Product): CartItemProps => ({

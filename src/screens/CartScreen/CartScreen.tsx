@@ -78,7 +78,7 @@ const CartScreen = () => {
             </View>
             <TouchableOpacity
               style={styles.checkoutBtn}
-              onPress={handleCheckout}
+              onPress={() => handleCheckout()}
               activeOpacity={0.7}
             >
               <Text style={styles.checkoutText}>CHECKOUT</Text>
