@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-} from 'react-native';
-import { colors } from '../../theme/colors';
-import { moderateScale, scale, verticalScale } from '../../utils/responsive';
+import { View, TextInput, TouchableOpacity, Text } from 'react-native';
+import { styles } from './SearchBar.style';
 
 type SearchBarProps = {
   value: string;
@@ -35,33 +28,3 @@ export const SearchBar = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  searchContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: scale(15),
-    paddingVertical: verticalScale(10),
-    gap: scale(10),
-  },
-  searchInput: {
-    flex: 1,
-    height: verticalScale(40),
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: moderateScale(6),
-    paddingHorizontal: scale(12),
-    fontSize: moderateScale(14),
-  },
-  filterButton: {
-    backgroundColor: colors.background.secondary,
-    paddingHorizontal: scale(15),
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: moderateScale(6),
-  },
-  filterText: {
-    color: colors.text.muted,
-    fontSize: moderateScale(14),
-    fontWeight: '600',
-  },
-});

@@ -116,6 +116,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
 export const useCart = () => {
   const context = useContext(CartContext);
-  if (!context) throw new Error('Need to warp app with cartprovider');
+  if (!context) throw new Error('Need to wrap app with cartprovider');
   return context;
 };

@@ -1,4 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useEffect, useMemo, useState, useCallback } from 'react';
+import { Alert } from 'react-native';
+import { useCart } from '../../context/CartContext';
 
 export type RawProduct = {
   id: number;
@@ -17,6 +20,7 @@ type Filters = {
 };
 
 export const useProductListScreen = () => {
+  // -------- 🧠 Product States --------
   const [products, setProducts] = useState<RawProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -29,7 +33,12 @@ export const useProductListScreen = () => {
     maxPrice: null,
     sortBy: null,
   });
+  const [filterVisible, setFilterVisible] = useState(false);
 
+  const navigation = useNavigation<any>();
+  const { addToCart, cart } = useCart();
+
+  // -------- 📦 Fetch Products --------
   const fetchProducts = async (pageNumber: number, isRefreshing = false) => {
     const limit = 20;
     const skip = pageNumber * limit;
@@ -58,40 +67,42 @@ export const useProductListScreen = () => {
     }
   };
 
-  const handleRefresh = async () => {
+  // -------- 🔁 Refresh & Load More --------
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true);
     setPage(0);
     await fetchProducts(0, true);
     setRefreshing(false);
-  };
+  }, []);
 
-  const handleLoadMore = async () => {
+  const handleLoadMore = useCallback(async () => {
     if (loading || !hasMore) return;
     setLoading(true);
     await fetchProducts(page + 1);
     setPage(prev => prev + 1);
     setLoading(false);
-  };
+  }, [loading, hasMore, page]);
 
+  // -------- 🚀 Initial Fetch --------
   useEffect(() => {
     let mounted = true;
     setLoading(true);
     fetchProducts(0).finally(() => {
       if (mounted) setLoading(false);
     });
-
     return () => {
       mounted = false;
     };
   }, []);
 
+  // -------- 🏷️ Derived Data --------
   const categories = useMemo(() => {
     const s = new Set<string>();
     products.forEach(p => p.category && s.add(p.category));
     return Array.from(s).sort();
   }, [products]);
 
-  const filtered = useMemo(() => {
+  const filteredProducts = useMemo(() => {
     let list = products.slice();
 
     if (searchTerm.trim()) {
@@ -122,29 +133,86 @@ export const useProductListScreen = () => {
     return list;
   }, [products, searchTerm, filters]);
 
-  const clearFilters = () =>
+  // -------- 🧹 Filter Actions --------
+  const clearFilters = useCallback(() => {
     setFilters({
       category: null,
       minPrice: null,
       maxPrice: null,
       sortBy: null,
     });
+  }, []);
 
+  const handleFilterOpen = useCallback(() => setFilterVisible(true), []);
+  const handleFilterClose = useCallback(() => setFilterVisible(false), []);
+
+  // -------- 🛒 Cart Logic --------
+  const handleCartPress = useCallback(() => {
+    if (cart.length > 0) {
+      navigation.navigate('CartScreen');
+    } else {
+      Alert.alert('Empty Cart', 'Add some items to your cart first!');
+    }
+  }, [cart.length, navigation]);
+
+  const handleAddToCart = useCallback(
+    (item: RawProduct) => {
+      addToCart({
+        id: item.id,
+        title: item.title,
+        thumbnail: item.thumbnail,
+        price: String(item.price),
+        quantity: 1,
+      });
+    },
+    [addToCart],
+  );
+
+  const handleItemPress = useCallback(
+    (item: RawProduct, isInCart: boolean) => {
+      if (isInCart) {
+        navigation.navigate('CartScreen');
+      } else {
+        handleAddToCart(item);
+      }
+    },
+    [handleAddToCart, navigation],
+  );
+
+  const isItemInCart = useCallback(
+    (id: number) => cart.some(item => item.id === id),
+    [cart],
+  );
+
+  // -------- 📦 Return All --------
   return {
-    products,
-    filteredProducts: filtered,
+    // Product Data
+    filteredProducts,
     loading,
     refreshing,
+    hasMore,
+    categories,
     searchTerm,
-    setSearchTerm,
     filters,
+    filterVisible,
+
+    // Filter Actions
+    handleFilterOpen,
+    handleFilterClose,
+    setSearchTerm,
     setFilters,
     clearFilters,
-    categories,
+
+    // List Actions
     handleRefresh,
     handleLoadMore,
-    hasMore,
+
+    // Cart Actions
+    handleCartPress,
+    handleItemPress,
+    isItemInCart,
+
+    // Cart State
+    cart,
   } as const;
 };
-
-export default useProductListScreen;

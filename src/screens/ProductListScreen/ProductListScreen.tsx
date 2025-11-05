@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import {
   View,
   FlatList,
@@ -14,8 +14,7 @@ import { ProductCard } from '../../components/ProductCard/ProductCard';
 import FilterModal from './FilterModal';
 import { styles } from './ProductListScreen.style';
 import { colors } from '../../theme/colors';
-import { useProductListController } from './useProductListController';
-import { RawProduct } from './useProductListScreen';
+import { RawProduct, useProductListScreen } from './useProductListScreen';
 import CustomStatusBar from '../../components/CustomStatusBar/CustomStatusBar';
 
 const ProductListScreen: FC = () => {
@@ -39,12 +38,12 @@ const ProductListScreen: FC = () => {
     handleCartPress,
     handleItemPress,
     isItemInCart,
-  } = useProductListController();
+  } = useProductListScreen();
 
   const { width } = useWindowDimensions();
   const itemWidth = Math.floor((width - scale(30)) / 2);
 
-  const renderItem = React.useCallback(
+  const renderItem = useCallback(
     ({ item }: { item: RawProduct }) => {
       const isInCart = isItemInCart(item.id);
       return (
