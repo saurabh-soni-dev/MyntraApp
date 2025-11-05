@@ -1,6 +1,5 @@
-import { StyleSheet, Dimensions } from 'react-native';
-
-const { width } = Dimensions.get('window');
+import { StyleSheet } from 'react-native';
+import { moderateScale, verticalScale, scale } from '../../utils/responsive';
 
 export const styles = StyleSheet.create({
   container: {
@@ -11,71 +10,87 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 12,
+    paddingHorizontal: scale(15),
+    paddingVertical: verticalScale(12),
     borderBottomWidth: 1,
     borderColor: '#eee',
   },
   title: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: '600',
     color: '#111',
   },
+  cartButton: {
+    padding: scale(8),
+    borderRadius: moderateScale(6),
+  },
+  cartButtonDisabled: {
+    opacity: 0.6,
+  },
   cartText: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     color: '#e91e63',
     fontWeight: '600',
   },
+  cartTextDisabled: {
+    color: '#999',
+  },
   listContainer: {
-    paddingHorizontal: 10,
-    paddingBottom: 80,
+    paddingHorizontal: scale(10),
+    paddingBottom: verticalScale(80),
   },
   row: {
     justifyContent: 'space-between',
   },
   card: {
     backgroundColor: '#fff',
-    borderRadius: 10,
-    marginVertical: 8,
+    borderRadius: moderateScale(10),
+    marginVertical: verticalScale(8),
     elevation: 3,
-    padding: 10,
+    padding: scale(10),
     borderWidth: 0.2,
   },
   image: {
     width: '100%',
-    height: 150,
-    borderRadius: 8,
-    marginBottom: 8,
+    height: verticalScale(150),
+    borderRadius: moderateScale(8),
+    marginBottom: verticalScale(8),
   },
   name: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: '600',
     color: '#333',
-    marginBottom: 4,
+    marginBottom: verticalScale(4),
   },
   price: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: 'green',
     fontWeight: '600',
-    marginBottom: 8,
+    marginBottom: verticalScale(8),
   },
   addButton: {
     backgroundColor: '#e91e63',
-    paddingVertical: 8,
-    borderRadius: 6,
+    paddingVertical: verticalScale(8),
+    borderRadius: moderateScale(6),
     alignItems: 'center',
+  },
+  addButtonDisabled: {
+    backgroundColor: '#f8bbd0',
+  },
+  goToCartButton: {
+    backgroundColor: '#2196f3', // A nice blue color to differentiate from Add to Cart
   },
   addText: {
     color: '#fff',
     fontWeight: '600',
-    fontSize: 14,
+    fontSize: moderateScale(14),
   },
   bottomButton: {
     backgroundColor: '#000',
-    paddingVertical: 14,
-    marginHorizontal: 15,
-    marginBottom: 15,
-    borderRadius: 8,
+    paddingVertical: verticalScale(14),
+    marginHorizontal: scale(15),
+    marginBottom: verticalScale(15),
+    borderRadius: moderateScale(8),
     alignItems: 'center',
     position: 'absolute',
     bottom: 0,
@@ -85,6 +100,40 @@ export const styles = StyleSheet.create({
   bottomText: {
     color: '#fff',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: moderateScale(16),
+  },
+  loaderContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: scale(12),
+    paddingVertical: verticalScale(10),
+    alignItems: 'center',
+    gap: scale(8),
+  },
+  searchInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#eee',
+    paddingVertical: verticalScale(8),
+    paddingHorizontal: scale(12),
+    borderRadius: moderateScale(8),
+    backgroundColor: '#fafafa',
+  },
+  filterButton: {
+    marginLeft: scale(8),
+    paddingVertical: verticalScale(8),
+    paddingHorizontal: scale(12),
+    borderRadius: moderateScale(8),
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#eee',
+  },
+  filterText: {
+    color: '#333',
+    fontWeight: '600',
   },
 });

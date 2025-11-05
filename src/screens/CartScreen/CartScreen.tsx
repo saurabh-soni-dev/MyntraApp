@@ -8,13 +8,22 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
+import { moderateScale, verticalScale, scale } from '../../utils/responsive';
 import { useCart } from '../../context/CartContext';
 import CustomStatusBar from '../../components/CustomStatusBar';
 import { useNavigation } from '@react-navigation/native';
 
 const CartScreen = () => {
-  const { cart, incrementQty, decrementQty, removeToCart, total, clearCart } =
-    useCart();
+  const {
+    cart,
+    incrementQty,
+    decrementQty,
+    removeToCart,
+    total,
+    clearCart,
+    canDecreaseQty,
+    getItemQuantity,
+  } = useCart();
   const navigation = useNavigation<any>();
 
   const handleCheckout = () => {
@@ -37,12 +46,16 @@ const CartScreen = () => {
 
         <View style={styles.qtyContainer}>
           <TouchableOpacity
-            style={styles.qtyBtn}
+            style={[
+              styles.qtyBtn,
+              !canDecreaseQty(item.id) && styles.qtyBtnDisabled,
+            ]}
             onPress={() => decrementQty(item.id)}
+            disabled={!canDecreaseQty(item.id)}
           >
             <Text style={styles.qtyText}>-</Text>
           </TouchableOpacity>
-          <Text style={styles.qtyCount}>{item.quantity}</Text>
+          <Text style={styles.qtyCount}>{getItemQuantity(item.id)}</Text>
           <TouchableOpacity
             style={styles.qtyBtn}
             onPress={() => incrementQty(item.id)}
@@ -66,7 +79,7 @@ const CartScreen = () => {
           <Text style={styles.backArrow}>←</Text>
         </TouchableOpacity>
         <Text style={styles.headerText}>My Cart ({cart.length})</Text>
-        <View style={{ width: 20 }} />
+        <View style={styles.headerSpacer} />
       </View>
 
       {cart.length === 0 ? (
@@ -85,7 +98,7 @@ const CartScreen = () => {
             data={cart}
             keyExtractor={item => item.id.toString()}
             renderItem={renderItem}
-            contentContainerStyle={{ paddingBottom: 140 }}
+            contentContainerStyle={styles.listContent}
           />
 
           {/* Checkout Footer */}
@@ -115,92 +128,98 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    padding: 14,
+    padding: verticalScale(14),
     borderBottomWidth: 0.3,
     borderColor: '#ddd',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  headerSpacer: {
+    width: scale(20),
+  },
   backArrow: {
-    fontSize: 22,
+    fontSize: moderateScale(22),
     color: '#333',
   },
   headerText: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: '700',
     color: '#333',
   },
   card: {
     flexDirection: 'row',
     backgroundColor: '#fff',
-    marginHorizontal: 12,
-    marginVertical: 6,
-    borderRadius: 10,
+    marginHorizontal: scale(12),
+    marginVertical: verticalScale(6),
+    borderRadius: moderateScale(10),
     elevation: 3,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    padding: 10,
+    padding: scale(10),
   },
   image: {
-    width: 90,
-    height: 100,
-    borderRadius: 8,
+    width: moderateScale(90),
+    height: verticalScale(100),
+    borderRadius: moderateScale(8),
     resizeMode: 'cover',
   },
   details: {
     flex: 1,
-    marginLeft: 12,
+    marginLeft: scale(12),
   },
   title: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: '600',
     color: '#333',
   },
   brand: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     color: '#777',
   },
   price: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: '700',
     color: '#222',
-    marginTop: 4,
+    marginTop: verticalScale(4),
   },
   qtyContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 6,
+    marginTop: verticalScale(6),
   },
   qtyBtn: {
-    width: 28,
-    height: 28,
-    borderRadius: 6,
+    width: moderateScale(28),
+    height: moderateScale(28),
+    borderRadius: moderateScale(6),
     backgroundColor: '#ff4081',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  qtyBtnDisabled: {
+    backgroundColor: '#f8bbd0',
+  },
   qtyText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: '600',
   },
   qtyCount: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: '600',
-    marginHorizontal: 10,
+    marginHorizontal: scale(10),
     color: '#333',
   },
   removeText: {
     color: '#ff3b30',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: '500',
-    marginTop: 8,
+    marginTop: verticalScale(8),
   },
   footer: {
     position: 'absolute',
-    bottom: 25,
+    bottom: verticalScale(25),
     width: '100%',
     borderTopWidth: 0.3,
     borderColor: '#ddd',
@@ -208,31 +227,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: scale(16),
+    paddingVertical: verticalScale(12),
   },
   footerLeft: {
     flexDirection: 'column',
   },
   totalLabel: {
-    fontSize: 13,
+    fontSize: moderateScale(13),
     color: '#777',
   },
   totalValue: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: '700',
     color: '#222',
   },
   checkoutBtn: {
     backgroundColor: '#ff4081',
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    borderRadius: 8,
+    paddingVertical: verticalScale(10),
+    paddingHorizontal: scale(24),
+    borderRadius: moderateScale(8),
   },
   checkoutText: {
     color: '#fff',
     fontWeight: '700',
-    fontSize: 14,
+    fontSize: moderateScale(14),
   },
   emptyContainer: {
     flex: 1,
@@ -240,18 +259,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   emptyText: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     color: '#555',
     marginBottom: 20,
   },
   shopBtn: {
     backgroundColor: '#ff4081',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
+    paddingVertical: verticalScale(10),
+    paddingHorizontal: scale(20),
+    borderRadius: moderateScale(8),
   },
   shopText: {
     color: '#fff',
     fontWeight: '600',
+  },
+  listContent: {
+    paddingBottom: verticalScale(140),
   },
 });
