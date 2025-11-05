@@ -10,9 +10,9 @@ import {
 import { moderateScale, verticalScale, scale } from '../../utils/responsive';
 import { colors } from '../../theme/colors';
 import { useCart } from '../../context/CartContext';
-import CustomStatusBar from '../../components/CustomStatusBar';
 import { useNavigation } from '@react-navigation/native';
 import { CartItem } from '../../components/CartItem/CartItem';
+import CustomStatusBar from '../../components/CustomStatusBar/CustomStatusBar';
 
 const CartScreen = () => {
   const {
