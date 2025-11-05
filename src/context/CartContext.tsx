@@ -1,29 +1,39 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
-import { Product } from '../screens/ProductListScreen/useProductListScreen';
+
+export interface Product {
+  id: number;
+  title: string;
+  thumbnail: string;
+  price: string;
+  quantity: number;
+}
 
 interface CartContextType {
   cart: Product[];
+  total: number;
   addToCart: (item: Product) => void;
   removeToCart: (id: number) => void;
-  increaseQty: (id: number) => void;
-  decreaseQty: (id: number) => void;
-  total: number;
+  incrementQty: (id: number) => void;
+  decrementQty: (id: number) => void;
   clearCart: () => void;
 }
 
-export const CartContext = createContext<CartContextType | undefined>(
-  undefined,
-);
+const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<Product[]>([]);
 
+  const total = cart.reduce(
+    (sum, item) => sum + Number(item.price) * (item.quantity || 1),
+    0,
+  );
+
   const addToCart = (item: Product) => {
     setCart(prevState => {
-      const existing = prevState.find(p => p.id === item.id);
+      const existing = prevState?.find(p => p.id === item.id);
       if (existing) {
         return prevState?.map(p =>
-          p.id === item.id ? { ...p, quantity: item.quantity || 1 } : p,
+          p.id === item.id ? { ...p, quantity: p.quantity || 1 } : item,
         );
       }
       return [...prevState, { ...item, quantity: 1 }];
@@ -31,26 +41,24 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const removeToCart = (id: number) => {
-    setCart(prevState => prevState?.filter(p => p.id !== id));
+    setCart(prevState => prevState.filter(p => p.id !== id));
   };
 
-  const increaseQty = (id: number) => {
+  const incrementQty = (id: number) => {
     setCart(prevState =>
-      prevState?.map(p =>
+      prevState.map(p =>
         p.id === id ? { ...p, quantity: (p.quantity || 1) + 1 } : p,
       ),
     );
   };
 
-  const decreaseQty = (id: number) => {
+  const decrementQty = (id: number) => {
     setCart(prevState =>
       prevState
-        ?.map(p => (p.id === id ? { ...p, quantity: p?.quantity - 1 } : p))
-        .filter(np => np?.quantity > 0),
+        .map(p => (p.id === id ? { ...p, quantity: p.quantity - 1 } : p))
+        .filter(p => p.quantity > 0),
     );
   };
-
-  const total = cart?.reduce((sum, p) => sum + p.price * (p?.quantity || 1), 0);
 
   const clearCart = () => setCart([]);
 
@@ -58,11 +66,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     <CartContext.Provider
       value={{
         cart,
+        total,
         addToCart,
         removeToCart,
-        increaseQty,
-        decreaseQty,
-        total,
+        incrementQty,
+        decrementQty,
         clearCart,
       }}
     >
@@ -73,6 +81,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
 export const useCart = () => {
   const context = useContext(CartContext);
-  if (!context) throw new Error('Need to wrap whole app with CartProvider');
+  if (!context) throw new Error('Need to warp app with cartprovider');
   return context;
 };

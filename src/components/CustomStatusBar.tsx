@@ -1,29 +1,15 @@
-import { View, StatusBar } from 'react-native';
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
+import { StatusBar, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import colors from '../theme/colors';
 
-interface CustomStatusBarProps {
-  backgroundColor?: string;
-  barStyle?: 'default' | 'light-content' | 'dark-content';
-}
-
-const CustomStatusBar: FC<CustomStatusBarProps> = ({
-  backgroundColor,
-  barStyle = 'default',
-}) => {
+const CustomStatusBar: FC = () => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View
-      style={{
-        height: insets.top,
-        backgroundColor: backgroundColor ?? colors.white,
-      }}
-    >
-      <StatusBar barStyle={barStyle} />
+    <View style={{ height: insets.top }}>
+      <StatusBar />
     </View>
   );
 };
 
-export default CustomStatusBar;
+export default memo(CustomStatusBar);

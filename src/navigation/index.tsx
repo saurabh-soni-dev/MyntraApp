@@ -1,13 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { FC } from 'react';
+import React from 'react';
 import CartScreen from '../screens/CartScreen/CartScreen';
 import ProductListScreen from '../screens/ProductListScreen/ProductListScreen';
 import { CartProvider } from '../context/CartContext';
 
 const Stack = createNativeStackNavigator();
 
-const Route: FC = () => {
+const Route = () => {
   return (
     <CartProvider>
       <NavigationContainer>

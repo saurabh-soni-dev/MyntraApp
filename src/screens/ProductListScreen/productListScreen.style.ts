@@ -1,99 +1,90 @@
-import { Dimensions, StyleSheet } from 'react-native';
-import colors from '../../theme/colors';
+import { StyleSheet, Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
-  },
-  mainContainer: {
-    flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: '#fff',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-    borderBottomWidth: 0.2,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderColor: '#eee',
   },
-  headingText: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: colors.black,
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#111',
   },
-  cartButtonText: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: colors.pink,
+  cartText: {
+    fontSize: 16,
+    color: '#e91e63',
+    fontWeight: '600',
   },
-  productListContainer: {
-    flex: 1,
+  listContainer: {
+    paddingHorizontal: 10,
+    paddingBottom: 80,
   },
-  loaderView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  productsContentContainerStyle: {
-    flex: 1,
-    rowGap: 10,
-    padding: 15,
-  },
-  productColumnWrapperStyle: {
+  row: {
     justifyContent: 'space-between',
   },
-
-  productCard: {
-    borderWidth: 0.2,
-    padding: 12,
-    width: width / 2 - 20,
+  card: {
+    backgroundColor: '#fff',
     borderRadius: 10,
+    marginVertical: 8,
+    elevation: 3,
+    padding: 10,
+    borderWidth: 0.2,
   },
-  thumbnail: {
-    height: 160,
-    width: 150,
+  image: {
+    width: '100%',
+    height: 150,
+    borderRadius: 8,
+    marginBottom: 8,
   },
-  titleStyle: {
-    fontSize: 16,
-    color: colors.black,
-  },
-  brandStyle: {
-    marginTop: 1,
-    fontSize: 12,
-    color: colors.black,
-  },
-  priceStyle: {
-    marginTop: 6,
-    fontSize: 16,
-    fontWeight: '700',
-    color: colors.green,
-  },
-
-  removeToCartButton: {
-    height: 35,
-    backgroundColor: colors.red,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
-    borderRadius: 6,
-  },
-
-  addToCartButton: {
-    height: 35,
-    backgroundColor: colors.pink,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
-    borderRadius: 6,
-  },
-
-  addToCartText: {
+  name: {
     fontSize: 14,
-    color: colors.white,
-    fontWeight: '500',
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 4,
+  },
+  price: {
+    fontSize: 14,
+    color: 'green',
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  addButton: {
+    backgroundColor: '#e91e63',
+    paddingVertical: 8,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  addText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  bottomButton: {
+    backgroundColor: '#000',
+    paddingVertical: 14,
+    marginHorizontal: 15,
+    marginBottom: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+    width: '90%',
+    alignSelf: 'center',
+  },
+  bottomText: {
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 16,
   },
 });
